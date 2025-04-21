@@ -1,0 +1,23 @@
+{
+  "name": "Alkalmazotti Jutalom Kezelő",
+  "short_name": "Jutalom Kezelő",
+  "description": "Alkalmazotti jutalmak nyilvántartása és kezelése",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#c8102e",
+  "theme_color": "#c8102e",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
