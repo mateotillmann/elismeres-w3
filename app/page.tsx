@@ -16,6 +16,7 @@ import ManagerCardScanner from "@/components/manager-card-scanner"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, RefreshCw } from "lucide-react"
 import type { ManagerCard } from "@/lib/types"
+import { useMobile } from "@/hooks/use-mobile"
 
 function LoginForm() {
   const router = useRouter()
@@ -28,6 +29,8 @@ function LoginForm() {
   const [isLoadingManagers, setIsLoadingManagers] = useState(true)
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
+  const isMobile = useMobile()
+  const defaultTab = isMobile ? "manager" : "password"
 
   // Add admin users to the list
   const addAdminUsers = useCallback((existingManagers: ManagerCard[] = []) => {
@@ -80,9 +83,11 @@ function LoginForm() {
         throw new Error("Invalid data format received from server")
       }
 
-      // Add admins to the list
+      // Add admins to the list and sort alphabetically by name
       const managersWithAdmins = addAdminUsers(data)
-      setManagers(managersWithAdmins)
+      const sortedManagers = managersWithAdmins.sort((a, b) => a.name.localeCompare(b.name, "hu"))
+
+      setManagers(sortedManagers)
       setFetchError(null)
     } catch (error) {
       console.error("Error fetching managers:", error)
@@ -90,8 +95,10 @@ function LoginForm() {
         "Nem sikerült betölteni a vezetőket. Használja a vezetői kártya beolvasást vagy jelentkezzen be adminként.",
       )
 
-      // Still add admins even if fetch fails
-      setManagers(addAdminUsers())
+      // Still add admins even if fetch fails, and sort them
+      const adminUsers = addAdminUsers()
+      const sortedAdmins = adminUsers.sort((a, b) => a.name.localeCompare(b.name, "hu"))
+      setManagers(sortedAdmins)
     } finally {
       setIsLoadingManagers(false)
     }
@@ -203,14 +210,27 @@ function LoginForm() {
             <CardDescription className="dark:text-gray-300 mt-1">Jelentkezzen be a folytatáshoz</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="manager">
+            <Tabs defaultValue={defaultTab}>
               <TabsList className="grid w-full grid-cols-2 dark:bg-gray-700">
-                <TabsTrigger value="manager" className="dark:text-gray-200 dark:data-[state=active]:bg-gray-600">
-                  Vezetői kártya
-                </TabsTrigger>
-                <TabsTrigger value="password" className="dark:text-gray-200 dark:data-[state=active]:bg-gray-600">
-                  Jelszavas belépés
-                </TabsTrigger>
+                {isMobile ? (
+                  <>
+                    <TabsTrigger value="manager" className="dark:text-gray-200 dark:data-[state=active]:bg-gray-600">
+                      Vezetői kártya
+                    </TabsTrigger>
+                    <TabsTrigger value="password" className="dark:text-gray-200 dark:data-[state=active]:bg-gray-600">
+                      Jelszavas belépés
+                    </TabsTrigger>
+                  </>
+                ) : (
+                  <>
+                    <TabsTrigger value="password" className="dark:text-gray-200 dark:data-[state=active]:bg-gray-600">
+                      Jelszavas belépés
+                    </TabsTrigger>
+                    <TabsTrigger value="manager" className="dark:text-gray-200 dark:data-[state=active]:bg-gray-600">
+                      Vezetői kártya
+                    </TabsTrigger>
+                  </>
+                )}
               </TabsList>
 
               <TabsContent value="manager" className="mt-4">
