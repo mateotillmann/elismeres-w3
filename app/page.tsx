@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,8 +33,14 @@ function LoginForm() {
   const addAdminUser = useCallback((existingManagers: ManagerCard[] = []) => {
     return [
       {
-        id: "admin",
+        id: "admin1",
         name: "Szabó Dávid",
+        role: "Admin",
+        position: "Admin",
+      },
+      {
+        id: "admin2",
+        name: "Pompor Máté",
         role: "Admin",
         position: "Admin",
       },
@@ -178,7 +183,7 @@ function LoginForm() {
 
   // Direct admin login handler
   const handleDirectAdminLogin = () => {
-    setSelectedManagerId("admin")
+    setSelectedManagerId("admin1") // Default to the first admin
     setPassword("")
   }
 

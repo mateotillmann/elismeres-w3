@@ -18,7 +18,7 @@ type AuthContextType = {
   managerInfo: ManagerInfo | null
   login: (managerId: string, managerName: string, managerRole: string, permissions?: Permission[]) => boolean
   loginWithPassword: (managerId: string, password: string) => Promise<boolean>
-  adminLogin: (password: string) => boolean
+  adminLogin: (password: string, adminId?: string) => boolean
   logout: () => void
   hasPermission: (permission: Permission) => boolean
   updatePassword: (managerId: string, newPassword: string) => Promise<boolean>
@@ -26,8 +26,12 @@ type AuthContextType = {
   remainingTime: number
 }
 
-const ADMIN_PASSWORD = "EsztergomiSavinko"
+const ADMIN_ACCOUNTS = [
+  { id: "admin1", name: "Szabó Dávid", password: "EsztergomiSavinko" },
+  { id: "admin2", name: "Pompor Máté", password: "Jazmin0811" },
+]
 const ADMIN_NAME = "Szabó Dávid"
+const ADMIN_PASSWORD = "AdminPassword123" // Declare ADMIN_PASSWORD variable
 const INACTIVITY_TIMEOUT = 3 * 60 * 1000 // 3 minutes in milliseconds
 
 // Define role-based permissions
@@ -129,20 +133,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (adminAuth === "true") {
       setIsAdmin(true)
       setIsLoggedIn(true)
-      setManagerInfo({
-        id: "admin",
-        name: ADMIN_NAME,
-        role: "Admin",
-        permissions: [
-          "manage_employees",
-          "issue_rewards",
-          "redeem_rewards",
-          "manage_managers",
-          "add_delete_managers",
-          "edit_manager_privileges",
-          "change_manager_passwords",
-        ],
-      })
+
+      // Try to get the specific admin info from localStorage
+      const managerAuth = localStorage.getItem("managerAuth")
+      if (managerAuth) {
+        try {
+          const manager = JSON.parse(managerAuth)
+          setManagerInfo(manager)
+        } catch (error) {
+          // If parsing fails, set default admin info
+          setManagerInfo({
+            id: ADMIN_ACCOUNTS[0].id,
+            name: ADMIN_ACCOUNTS[0].name,
+            role: "Admin",
+            permissions: [
+              "manage_employees",
+              "issue_rewards",
+              "redeem_rewards",
+              "manage_managers",
+              "add_delete_managers",
+              "edit_manager_privileges",
+              "change_manager_passwords",
+            ],
+          })
+        }
+      } else {
+        // If no manager info, set default admin info
+        setManagerInfo({
+          id: ADMIN_ACCOUNTS[0].id,
+          name: ADMIN_ACCOUNTS[0].name,
+          role: "Admin",
+          permissions: [
+            "manage_employees",
+            "issue_rewards",
+            "redeem_rewards",
+            "manage_managers",
+            "add_delete_managers",
+            "edit_manager_privileges",
+            "change_manager_passwords",
+          ],
+        })
+      }
     } else if (managerAuth) {
       try {
         const manager = JSON.parse(managerAuth) as ManagerInfo
@@ -312,13 +343,59 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 
   const adminLogin = useCallback(
-    (password: string) => {
-      if (password === ADMIN_PASSWORD) {
+    (password: string, adminId?: string) => {
+      // If adminId is provided, check only that specific admin account
+      if (adminId) {
+        const admin = ADMIN_ACCOUNTS.find((a) => a.id === adminId)
+        if (admin && admin.password === password) {
+          setIsAdmin(true)
+          setIsLoggedIn(true)
+          setManagerInfo({
+            id: admin.id,
+            name: admin.name,
+            role: "Admin",
+            permissions: [
+              "manage_employees",
+              "issue_rewards",
+              "redeem_rewards",
+              "manage_managers",
+              "add_delete_managers",
+              "edit_manager_privileges",
+              "change_manager_passwords",
+            ],
+          })
+          localStorage.setItem("adminAuth", "true")
+          localStorage.setItem(
+            "managerAuth",
+            JSON.stringify({
+              id: admin.id,
+              name: admin.name,
+              role: "Admin",
+              permissions: [
+                "manage_employees",
+                "issue_rewards",
+                "redeem_rewards",
+                "manage_managers",
+                "add_delete_managers",
+                "edit_manager_privileges",
+                "change_manager_passwords",
+              ],
+            }),
+          )
+          resetInactivityTimer()
+          return true
+        }
+        return false
+      }
+
+      // If no adminId is provided, check all admin accounts
+      const admin = ADMIN_ACCOUNTS.find((a) => a.password === password)
+      if (admin) {
         setIsAdmin(true)
         setIsLoggedIn(true)
         setManagerInfo({
-          id: "admin",
-          name: ADMIN_NAME,
+          id: admin.id,
+          name: admin.name,
           role: "Admin",
           permissions: [
             "manage_employees",
@@ -334,8 +411,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem(
           "managerAuth",
           JSON.stringify({
-            id: "admin",
-            name: ADMIN_NAME,
+            id: admin.id,
+            name: admin.name,
             role: "Admin",
             permissions: [
               "manage_employees",
