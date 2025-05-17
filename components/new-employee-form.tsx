@@ -40,7 +40,7 @@ export default function NewEmployeeForm() {
 
       toast({
         title: translations.success,
-        description: "Alkalmazott sikeresen hozzáadva",
+        description: "Munkatárs sikeresen hozzáadva",
       })
 
       router.push("/employees")
@@ -60,7 +60,7 @@ export default function NewEmployeeForm() {
       <Card>
         <CardHeader>
           <CardTitle>{translations.addEmployee}</CardTitle>
-          <CardDescription>Adja meg az új alkalmazott adatait</CardDescription>
+          <CardDescription>Adja meg az új munkatárs adatait</CardDescription>
         </CardHeader>
         <form action={handleSubmit}>
           <CardContent className="space-y-4">

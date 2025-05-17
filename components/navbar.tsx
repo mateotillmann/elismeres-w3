@@ -57,7 +57,7 @@ export default function Navbar() {
     <header className="border-b dark:border-gray-700 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/dashboard" className="font-bold text-xl dark:text-white" onClick={closeMenu}>
-          Jutalom Kezelő
+          Munkatársi Jutalom Kezelő
         </Link>
 
         {/* Mobile menu button */}

@@ -71,11 +71,11 @@ export default function EmployeesList() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">Alkalmazottak</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Munkatársak</h1>
         <Link href="/employees/new" className="shrink-0">
           <Button className="w-full sm:w-auto">
             <PlusCircle className="h-4 w-4 mr-2" />
-            <span className="whitespace-nowrap">Alkalmazott hozzáadása</span>
+            <span className="whitespace-nowrap">Munkatárs hozzáadása</span>
           </Button>
         </Link>
       </div>
@@ -95,12 +95,12 @@ export default function EmployeesList() {
         <div className="text-center p-12 border rounded-lg">
           {employees.length === 0 ? (
             <>
-              <h2 className="text-xl font-semibold mb-2">Még nincsenek alkalmazottak</h2>
-              <p className="text-muted-foreground mb-4">Adja hozzá az első alkalmazottat a jutalmak követéséhez</p>
+              <h2 className="text-xl font-semibold mb-2">Még nincsenek munkatársak</h2>
+              <p className="text-muted-foreground mb-4">Adja hozzá az első munkatársat a jutalmak követéséhez</p>
               <Link href="/employees/new">
                 <Button>
                   <PlusCircle className="h-4 w-4 mr-2" />
-                  Alkalmazott hozzáadása
+                  Munkatárs hozzáadása
                 </Button>
               </Link>
             </>

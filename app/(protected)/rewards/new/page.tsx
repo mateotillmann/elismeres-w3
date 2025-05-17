@@ -60,14 +60,14 @@ export default function NewRewardPage() {
             setSelectedEmployeeData(preselected)
             // If the preselected employee is locked, show an error
             if (preselected.isLocked) {
-              setError(`Ez az alkalmazott zárolva van: ${preselected.name}. ${preselected.lockReason || ""}`)
+              setError(`Ez a munkatárs zárolva van: ${preselected.name}. ${preselected.lockReason || ""}`)
             }
           }
         }
       } catch (error) {
         toast({
           title: "Hiba",
-          description: "Alkalmazottak betöltése sikertelen",
+          description: "Munkatársak betöltése sikertelen",
           variant: "destructive",
         })
       } finally {
@@ -100,9 +100,7 @@ export default function NewRewardPage() {
 
       // Check if the selected employee is locked
       if (selectedEmployeeData?.isLocked) {
-        setError(
-          `Ez az alkalmazott zárolva van: ${selectedEmployeeData.name}. ${selectedEmployeeData.lockReason || ""}`,
-        )
+        setError(`Ez a munkatárs zárolva van: ${selectedEmployeeData.name}. ${selectedEmployeeData.lockReason || ""}`)
         setIsSubmitting(false)
         return
       }
@@ -169,9 +167,9 @@ export default function NewRewardPage() {
   if (employees.length === 0) {
     return (
       <div className="text-center p-12 border rounded-lg">
-        <h2 className="text-xl font-semibold mb-2">Nincsenek elérhető alkalmazottak</h2>
-        <p className="text-muted-foreground mb-4">Minden alkalmazott zárolva van, vagy még nincs alkalmazott</p>
-        <Button onClick={() => router.push("/employees/new")}>Alkalmazott hozzáadása</Button>
+        <h2 className="text-xl font-semibold mb-2">Nincsenek elérhető munkatársak</h2>
+        <p className="text-muted-foreground mb-4">Minden munkatárs zárolva van, vagy még nincs munkatárs</p>
+        <Button onClick={() => router.push("/employees/new")}>Munkatárs hozzáadása</Button>
       </div>
     )
   }
@@ -181,7 +179,7 @@ export default function NewRewardPage() {
       <Card className="dark:bg-gray-800">
         <CardHeader>
           <CardTitle className="dark:text-white">Jutalom kiadása</CardTitle>
-          <CardDescription className="dark:text-gray-300">Új jutalom kártya kiadása egy alkalmazottnak</CardDescription>
+          <CardDescription className="dark:text-gray-300">Új jutalom kártya kiadása egy munkatársnak</CardDescription>
           {managerInfo && (
             <div className="mt-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md text-sm dark:text-gray-200">
               Jóváhagyó: {managerInfo.name} ({managerInfo.role})
@@ -208,7 +206,7 @@ export default function NewRewardPage() {
                 <Lock className="h-4 w-4" />
                 <AlertTitle>Zárolva</AlertTitle>
                 <AlertDescription>
-                  Ez az alkalmazott zárolva van és nem kaphat jutalmat.
+                  Ez a munkatárs zárolva van és nem kaphat jutalmat.
                   {selectedEmployeeData.lockReason && (
                     <div className="mt-1">
                       <span className="font-medium">Ok:</span> {selectedEmployeeData.lockReason}
@@ -220,11 +218,11 @@ export default function NewRewardPage() {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="employeeId" className="dark:text-gray-200">
-                    Alkalmazott
+                    Munkatárs
                   </Label>
                   <Select name="employeeId" value={selectedEmployee} onValueChange={setSelectedEmployee} required>
                     <SelectTrigger className="dark:bg-gray-700 dark:text-white dark:border-gray-600">
-                      <SelectValue placeholder="Válasszon alkalmazottat" />
+                      <SelectValue placeholder="Válasszon munkatársat" />
                     </SelectTrigger>
                     <SelectContent className="dark:bg-gray-700">
                       {employees.map((employee) => (

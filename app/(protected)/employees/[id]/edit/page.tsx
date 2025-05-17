@@ -40,7 +40,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
       } catch (error) {
         toast({
           title: translations.error,
-          description: "Alkalmazott adatainak betöltése sikertelen",
+          description: "Munkatárs adatainak betöltése sikertelen",
           variant: "destructive",
         })
       } finally {
@@ -79,7 +79,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
 
       toast({
         title: translations.success,
-        description: "Alkalmazott sikeresen frissítve",
+        description: "Munkatárs sikeresen frissítve",
       })
 
       router.push(`/employees/${params.id}`)
@@ -105,7 +105,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
   if (!employee) {
     return (
       <div className="flex justify-center items-center h-[50vh]">
-        <p>Alkalmazott nem található</p>
+        <p>Munkatárs nem található</p>
       </div>
     )
   }
@@ -116,7 +116,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
         <Card>
           <CardHeader>
             <CardTitle>{translations.editEmployee}</CardTitle>
-            <CardDescription>Alkalmazott adatainak frissítése</CardDescription>
+            <CardDescription>Munkatárs adatainak frissítése</CardDescription>
           </CardHeader>
           <form action={handleSubmit}>
             <CardContent className="space-y-4">
@@ -156,9 +156,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
                       <Label htmlFor="isLocked" className="text-base">
                         Zárolás
                       </Label>
-                      <p className="text-sm text-muted-foreground">
-                        Ha zárolva van, az alkalmazott nem kaphat jutalmat
-                      </p>
+                      <p className="text-sm text-muted-foreground">Ha zárolva van, a munkatárs nem kaphat jutalmat</p>
                     </div>
                     <Switch id="isLocked" checked={isLocked} onCheckedChange={setIsLocked} />
                   </div>

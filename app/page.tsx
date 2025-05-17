@@ -193,8 +193,14 @@ function LoginForm() {
       <div className="max-w-md w-full">
         <Card className="dark:bg-gray-800">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl dark:text-white">Alkalmazotti Jutalom Kezelő</CardTitle>
-            <CardDescription className="dark:text-gray-300">Jelentkezzen be a folytatáshoz</CardDescription>
+            <div className="flex justify-center mb-4">
+              <img src="/mcdonalds-logo.png" alt="McDonald's Logo" className="h-24 w-auto" />
+            </div>
+            <CardTitle className="text-2xl dark:text-white">Munkatársi Jutalom Kezelő</CardTitle>
+            <CardDescription className="dark:text-gray-300 mt-2">
+              Üdvözöljük a McDonald's Jutalom Kezelő rendszerében!
+            </CardDescription>
+            <CardDescription className="dark:text-gray-300 mt-1">Jelentkezzen be a folytatáshoz</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="manager">
@@ -309,7 +315,7 @@ function LoginForm() {
           </CardContent>
           <CardFooter className="flex justify-center">
             <p className="text-sm text-muted-foreground dark:text-gray-400">
-              &copy; {new Date().getFullYear()} Alkalmazotti Jutalom Kezelő
+              &copy; {new Date().getFullYear()} Munkatársi Jutalom Kezelő
             </p>
           </CardFooter>
         </Card>

@@ -8,8 +8,8 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Alkalmazotti Jutalom Kezelő",
-  description: "Alkalmazotti jutalmak nyilvántartása és kezelése",
+  title: "Munkatársi Jutalom Kezelő",
+  description: "Munkatársi jutalmak nyilvántartása és kezelése",
   generator: "v0.dev",
   manifest: "/manifest.json",
   themeColor: "#000000",

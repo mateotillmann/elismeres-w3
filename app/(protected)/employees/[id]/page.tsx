@@ -53,7 +53,7 @@ export default async function EmployeeDetailPage({ params }: { params: { id: str
       {employee.isLocked && (
         <Alert variant="destructive">
           <AlertDescription>
-            <div className="font-medium">Ez az alkalmazott zárolva van, nem kaphat jutalmat.</div>
+            <div className="font-medium">Ez a munkatárs zárolva van, nem kaphat jutalmat.</div>
             {employee.lockReason && (
               <div className="mt-1">
                 <span className="font-medium">Ok:</span> {employee.lockReason}
@@ -105,7 +105,7 @@ export default async function EmployeeDetailPage({ params }: { params: { id: str
         {rewardCards.length === 0 ? (
           <div className="text-center p-12 border rounded-lg">
             <h3 className="text-lg font-semibold mb-2">Nincsenek jutalmak</h3>
-            <p className="text-muted-foreground mb-4">Adjon ki jutalmat ennek az alkalmazottnak</p>
+            <p className="text-muted-foreground mb-4">Adjon ki jutalmat ennek a munkatársnak</p>
             <Link href={`/rewards/new?employeeId=${employee.id}`}>
               <Button disabled={employee.isLocked}>
                 <Plus className="h-4 w-4 mr-2" />
