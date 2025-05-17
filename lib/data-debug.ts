@@ -121,8 +121,11 @@ export async function assignExistingCard(
     if (cardType === "gold") points = 2
     if (cardType === "platinum") points = 3
 
-    // Calculate expiration
-    const expiresAt = calculateExpirationDate(employee.employmentType)
+    // Calculate expiration - always 30 days
+    const now = Date.now()
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000 // 30 days in milliseconds
+    const expiresAt = now + thirtyDays
+
     console.log(`Card will expire at: ${new Date(expiresAt).toISOString()}`)
 
     // Generate QR code
@@ -207,11 +210,9 @@ export async function getManagerCard(id: string): Promise<ManagerCard | null> {
   }
 }
 
-// Helper function to calculate expiration date based on employment type
+// Helper function to calculate expiration date - always 30 days
 export function calculateExpirationDate(employmentType: Employee["employmentType"]): number {
   const now = Date.now()
   const thirtyDays = 30 * 24 * 60 * 60 * 1000 // 30 days in milliseconds
-
-  // Return 30 days from now regardless of employment type
   return now + thirtyDays
 }

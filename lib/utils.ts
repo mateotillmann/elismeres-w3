@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Update the calculateExpirationDate function to always return 30 days
+// Helper function to calculate expiration date based on employment type
 export function calculateExpirationDate(employmentType: Employee["employmentType"]): number {
   const now = Date.now()
   const thirtyDays = 30 * 24 * 60 * 60 * 1000 // 30 days in milliseconds

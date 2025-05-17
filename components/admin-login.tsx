@@ -12,23 +12,18 @@ import { toast } from "@/components/ui/use-toast"
 import { translations } from "@/lib/translations"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Define admin accounts for selection
-const ADMIN_ACCOUNTS = [
-  { id: "admin1", name: "Szabó Dávid" },
-  { id: "admin2", name: "Pompor Máté" },
-]
-
 export default function AdminLogin({ onSuccess }: { onSuccess?: () => void }) {
-  const { login } = useAuth()
+  const { adminLogin } = useAuth()
   const [password, setPassword] = useState("")
-  const [selectedAdmin, setSelectedAdmin] = useState(ADMIN_ACCOUNTS[0].id)
+  const [selectedAdmin, setSelectedAdmin] = useState("admin")
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    const success = login(password, selectedAdmin)
+    // We'll just use the adminLogin function which now checks both passwords
+    const success = adminLogin(password)
 
     if (success) {
       toast({
@@ -65,11 +60,8 @@ export default function AdminLogin({ onSuccess }: { onSuccess?: () => void }) {
                   <SelectValue placeholder="Válasszon admin felhasználót" />
                 </SelectTrigger>
                 <SelectContent>
-                  {ADMIN_ACCOUNTS.map((admin) => (
-                    <SelectItem key={admin.id} value={admin.id}>
-                      {admin.name}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="admin">Szabó Dávid</SelectItem>
+                  <SelectItem value="admin2">Pompor Máté</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -85,8 +77,11 @@ export default function AdminLogin({ onSuccess }: { onSuccess?: () => void }) {
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full" disabled={isLoading}>
+        <CardFooter className="flex justify-between">
+          <Button variant="outline" type="button" onClick={onSuccess}>
+            Mégse
+          </Button>
+          <Button type="submit" disabled={isLoading}>
             {isLoading ? "Bejelentkezés..." : translations.login}
           </Button>
         </CardFooter>

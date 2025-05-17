@@ -29,11 +29,11 @@ function LoginForm() {
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
 
-  // Add admin user to the list
-  const addAdminUser = useCallback((existingManagers: ManagerCard[] = []) => {
+  // Add admin users to the list
+  const addAdminUsers = useCallback((existingManagers: ManagerCard[] = []) => {
     return [
       {
-        id: "admin1",
+        id: "admin",
         name: "Szabó Dávid",
         role: "Admin",
         position: "Admin",
@@ -80,9 +80,9 @@ function LoginForm() {
         throw new Error("Invalid data format received from server")
       }
 
-      // Add admin to the list
-      const managersWithAdmin = addAdminUser(data)
-      setManagers(managersWithAdmin)
+      // Add admins to the list
+      const managersWithAdmins = addAdminUsers(data)
+      setManagers(managersWithAdmins)
       setFetchError(null)
     } catch (error) {
       console.error("Error fetching managers:", error)
@@ -90,12 +90,12 @@ function LoginForm() {
         "Nem sikerült betölteni a vezetőket. Használja a vezetői kártya beolvasást vagy jelentkezzen be adminként.",
       )
 
-      // Still add admin even if fetch fails
-      setManagers(addAdminUser())
+      // Still add admins even if fetch fails
+      setManagers(addAdminUsers())
     } finally {
       setIsLoadingManagers(false)
     }
-  }, [addAdminUser])
+  }, [addAdminUsers])
 
   useEffect(() => {
     fetchManagers()
@@ -147,14 +147,15 @@ function LoginForm() {
     try {
       if (!selectedManagerId || !password) {
         setError("Vezető és jelszó megadása kötelező")
+        setIsLoading(false)
         return
       }
 
       let success = false
 
-      // Special case for admin login
-      if (selectedManagerId === "admin") {
-        success = adminLogin(password)
+      // Handle admin logins
+      if (selectedManagerId === "admin" || selectedManagerId === "admin2") {
+        success = await loginWithPassword(selectedManagerId, password)
       } else {
         success = await loginWithPassword(selectedManagerId, password)
       }
@@ -183,7 +184,7 @@ function LoginForm() {
 
   // Direct admin login handler
   const handleDirectAdminLogin = () => {
-    setSelectedManagerId("admin1") // Default to the first admin
+    setSelectedManagerId("admin")
     setPassword("")
   }
 
